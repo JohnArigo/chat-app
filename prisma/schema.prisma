@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Messages {
+  id Int @id @default(autoincrement())
+  username String
+  user_image String
+  message String
+  page_name String
+}
+
+model User {
+  username String @id
+  user_image String
+}
+
+model Pages{
+  page_name String @id
+  page_title String
+}
+
