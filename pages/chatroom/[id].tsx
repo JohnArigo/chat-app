@@ -3,7 +3,8 @@ import { PrismaClient } from "@prisma/client";
 import { getMessageData } from "../../libraries/getMessageData";
 import { Root2 } from "../../libraries/types";
 import { useRef, useState, useEffect } from "react";
-import useSWR from "swr";
+import axios from "axios";
+import useSWR, { SWRConfig } from "swr";
 
 const prisma = new PrismaClient();
 
@@ -29,7 +30,7 @@ export async function getStaticProps(context: any) {
     props: {
       messages: roomMessages,
     },
-    revalidate: 5,
+    revalidate: 10,
   };
 }
 
@@ -47,22 +48,39 @@ async function postMessages(userMessage: any) {
   return await response.json();
 }
 
-const url = "../api/retrieveMessages";
-const fetcher = (url: any) => fetch(url).then((res) => res.json());
+const fetcher = (url: any) => axios.get(url).then((res) => res.data);
 
 export default function ChatRoom({ messages }: any) {
   //determines the current route / page for comparison
+  const { data, error } = useSWR("/api/posts", fetcher);
+
+  const [messageData, setMessageData] = useState(data);
+
   const router = useRouter();
   const { id } = router.query;
   const myID = id!.toString();
+  console.log(data);
+  console.log(messages);
 
   //filters all messages to return message meant for specific page
-  const pageMessages = messages.filter((message: any) => {
-    if (message.page_name === myID) {
-      return message;
+  //data loads as undefined, so we use messages(staticProps) as a fallback data source(initial)
+  const findDataSource = () => {
+    if (messageData === undefined) {
+      const dataSource = messages.filter((message: any) => {
+        if (message.page_name === myID) {
+          return message;
+        }
+      });
+      return dataSource;
+    } else {
+      const dataSource = messageData?.filter((message: any) => {
+        if (message.page_name === myID) {
+          return message;
+        }
+      });
+      return dataSource;
     }
-  });
-
+  };
   //play on username
 
   const userName = "Rahggy";
@@ -88,6 +106,9 @@ export default function ChatRoom({ messages }: any) {
     e.preventDefault();
     try {
       await postMessages(userMessage);
+      setMessageData((prevState: any) => {
+        return [...prevState, userMessage];
+      });
       setuserMessage((prevState) => {
         return {
           ...prevState,
@@ -114,7 +135,7 @@ export default function ChatRoom({ messages }: any) {
         Click to view latest messages
       </button>
       <section className="bg-white rounded-md h-96 w-96 flex flex-wrap items-end overflow-y-auto">
-        {pageMessages.map((message: any) => {
+        {findDataSource()?.map((message: any) => {
           const messageContainer = () => {
             if (message.username === userName) {
               return "w-full flex flex-row-reverse items-center text-black mb-3 mr-2";
