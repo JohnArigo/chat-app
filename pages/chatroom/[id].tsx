@@ -106,7 +106,7 @@ export default function ChatRoom({ messages }: any) {
     e.preventDefault();
     try {
       await postMessages(userMessage);
-      setMessageData((prevState: any) => {
+      setMessageData?.((prevState: any) => {
         return [...prevState, userMessage];
       });
       setuserMessage((prevState) => {
