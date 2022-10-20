@@ -1,10 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import Link from "next/link";
-const prisma = new PrismaClient();
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { signOut, useSession } from "next-auth/react";
 
+const prisma = new PrismaClient();
 //pulling data from database SQLite using PRISMA
 export async function getServerSideProps() {
-  //prisma query
   const links = await prisma.pages.findMany();
 
   return {
@@ -15,7 +17,19 @@ export async function getServerSideProps() {
 }
 
 export default function ChatRooms({ links }: any) {
-  console.log(links);
+  const router = useRouter();
+
+  const { data: session, status } = useSession();
+  useEffect(() => {
+    if (session) {
+      console.log("session = true");
+      router.push("/chatroom");
+    } else {
+      // maybe go to login page
+      router.push("/api/auth/signin");
+    }
+  }, [router, session]);
+
   return (
     <main className="flex items-center h-screen w-screen">
       <section className="bg-red-100 w-20 h-full flex flex-col">

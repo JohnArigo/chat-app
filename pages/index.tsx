@@ -1,3 +1,4 @@
+/*
 import type { NextPage } from "next";
 
 const Home: NextPage = () => {
@@ -6,4 +7,17 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Home; */
+
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+
+export default function Home({ user }: any) {
+  // `session` will match the returned value of `callbacks.session()` from `NextAuth()`
+
+  return (
+    <main>
+      <Link href={"./chatroom"}>Chatroom</Link>
+    </main>
+  );
+}

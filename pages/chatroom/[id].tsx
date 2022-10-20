@@ -1,10 +1,11 @@
 import { useRouter } from "next/router";
 import { PrismaClient } from "@prisma/client";
 import { getMessageData } from "../../libraries/getMessageData";
-import { Root2 } from "../../libraries/types";
+import { Root2 } from "../../libraries/types/types";
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";
-import useSWR, { SWRConfig } from "swr";
+import useSWR from "swr";
+import { useSession } from "next-auth/react";
 
 const prisma = new PrismaClient();
 
@@ -47,50 +48,66 @@ async function postMessages(userMessage: any) {
 
   return await response.json();
 }
-
+//Fethcer tool for SWR to use.
 const fetcher = (url: any) => axios.get(url).then((res) => res.data);
 
 export default function ChatRoom({ messages }: any) {
-  //determines the current route / page for comparison
+  //fetches data from database client side in order to have a steady stream of data required
   const { data, error } = useSWR("/api/posts", fetcher);
-
-  const [messageData, setMessageData] = useState(data);
-
+  //Temp message data storage until API updates database or data fetches to refresh page
+  const [messageData, setMessageData] = useState(messages);
+  //determines the current route / page for comparison
   const router = useRouter();
-  const { id } = router.query;
-  const myID = id!.toString();
-  console.log(data);
-  console.log(messages);
+  const myID = () => {
+    const { id } = router.query;
+    const myID = id!.toString();
+    return myID;
+  };
+  //session data --using to extract userName, image
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (session) {
+      console.log("session = true");
+      router.push(`/chatroom/${myID()}`);
+    } else {
+      // maybe go to login page
+      router.push("/api/auth/signin");
+    }
+  }, [router, session]);
 
   //filters all messages to return message meant for specific page
   //data loads as undefined, so we use messages(staticProps) as a fallback data source(initial)
   const findDataSource = () => {
-    if (messageData === undefined) {
+    if (data === undefined) {
       const dataSource = messages.filter((message: any) => {
-        if (message.page_name === myID) {
+        if (message.page_name === myID()) {
           return message;
         }
       });
       return dataSource;
     } else {
       const dataSource = messageData?.filter((message: any) => {
-        if (message.page_name === myID) {
+        if (message.page_name === myID()) {
           return message;
         }
       });
       return dataSource;
     }
   };
-  //play on username
 
-  const userName = "Rahggy";
+  const userImage = () => {
+    if (session?.user?.image === null || session?.user?.image === undefined) {
+      return "invalid";
+    } else return session?.user?.image;
+  };
 
   //state for form being sent
   const [userMessage, setuserMessage] = useState<Root2>({
-    username: userName,
-    user_image: "filler",
+    username: session?.user?.name!,
+    user_image: userImage(),
     message: " ",
-    page_name: myID,
+    page_name: myID(),
   });
 
   //handles change in client state
@@ -112,9 +129,8 @@ export default function ChatRoom({ messages }: any) {
       setuserMessage((prevState) => {
         return {
           ...prevState,
-          user_image: "filler",
           message: " ",
-          page_name: myID,
+          page_name: myID(),
         };
       });
     } catch (err: any) {
@@ -137,10 +153,10 @@ export default function ChatRoom({ messages }: any) {
       <section className="bg-white rounded-md h-96 w-96 flex flex-wrap items-end overflow-y-auto">
         {findDataSource()?.map((message: any) => {
           const messageContainer = () => {
-            if (message.username === userName) {
-              return "w-full flex flex-row-reverse items-center text-black mb-3 mr-2";
+            if (message.username === session?.user?.name) {
+              return "w-full flex flex-row-reverse items-end text-black mb-3 mr-2";
             } else {
-              return "w-full flex flex-row items-center text-black mb-3";
+              return "w-full flex flex-row items-end text-black mb-3";
             }
           };
 
@@ -149,7 +165,7 @@ export default function ChatRoom({ messages }: any) {
               <h1 className="ml-2 w-14 h-14 flex justify-center items-center rounded-full bg-orange-700">
                 {message.username[0].toLocaleUpperCase()}
               </h1>
-              <h1 className=" w-52 h-16 bg-slate-600 ml-2 rounded-md">
+              <h1 className=" w-56 h-20 max-h-48 bg-slate-600 ml-2 rounded-md overflow-y-auto overflow-x-hidden">
                 {message.message}
               </h1>
             </div>
