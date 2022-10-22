@@ -118,11 +118,11 @@ const Header: React.FC = () => {
       <div className="left">
         <Link href="/">
           <a className="bold" data-active={isActive("/")}>
-            Feed
+            home
           </a>
         </Link>
-        <Link href="/drafts">
-          <a data-active={isActive("/drafts")}>My drafts</a>
+        <Link href="/chatroom">
+          <a data-active={isActive("/drafts")}>Chatrooms</a>
         </Link>
         <style jsx>{`
           .bold {
@@ -150,11 +150,7 @@ const Header: React.FC = () => {
         <p>
           {session.user?.name} ({session.user?.email})
         </p>
-        <Link href="/create">
-          <button>
-            <a>New post</a>
-          </button>
-        </Link>
+
         <button onClick={() => signOut()}>
           <a>Log out</a>
         </button>
@@ -194,7 +190,7 @@ const Header: React.FC = () => {
   }
 
   return (
-    <nav>
+    <nav className="fixed flex flex-row justify-between w-full">
       {left}
       {right}
       <style jsx>{`
