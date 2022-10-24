@@ -3,10 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { getMessageData } from "../../libraries/getMessageData";
 import { Root2 } from "../../libraries/types/types";
 import { useRef, useState, useEffect } from "react";
-import axios from "axios";
-import useSWR from "swr";
 import { useSession, getSession } from "next-auth/react";
-import noSessionForm from "../../components/noSessionForm";
 import NoSessionForm from "../../components/noSessionForm";
 
 const prisma = new PrismaClient();
@@ -33,7 +30,7 @@ export async function getStaticProps(context: any) {
     props: {
       messages: roomMessages,
     },
-    revalidate: 10,
+    revalidate: 5,
   };
 }
 
@@ -50,16 +47,16 @@ async function postMessages(userMessage: any) {
 
   return await response.json();
 }
-//Fethcer tool for SWR to use.
-const fetcher = (url: any) => axios.get(url).then((res) => res.data);
+//Fethcer tool for SWR to use
+//const fetcher = (url: any) => axios.get(url).then((res) => res.data);
 
 export default function ChatRoom({ messages }: any) {
   //fetches data from database client side in order to have a steady stream of data required
-  const { data, error } = useSWR("/api/posts", fetcher);
+  // const { data, error } = useSWR("/api/posts", fetcher);
   //Temp message data storage until API updates database or data fetches to refresh page
   const [messageData, setMessageData] = useState(messages);
   //Temp message data storage until API updates database or data fetches to refresh page
-  const [dataMessages, setDataMessages] = useState(data);
+  // const [dataMessages, setDataMessages] = useState(data);
   //determines the current route / page for comparison
   const router = useRouter();
   const myID = () => {
@@ -69,35 +66,6 @@ export default function ChatRoom({ messages }: any) {
   };
   //session data --using to extract userName, image
   const { data: session, status } = useSession();
-  /*  useEffect(() => {
-    if (session) {
-      console.log("session = true");
-      router.push(`/chatroom/${myID()}`);
-    } else {
-      // maybe go to login page
-      router.push("/api/auth/signin");
-    }
-  }, [router, session]); */
-
-  //filters all messages to return message meant for specific page
-  //data loads as undefined, so we use messages(staticProps) as a fallback data source(initial)
-  const findDataSource = () => {
-    if (dataMessages === undefined) {
-      const dataSource = messageData.filter((message: any) => {
-        if (message.page_name === myID()) {
-          return message;
-        }
-      });
-      return dataSource;
-    } else {
-      const dataSource = dataMessages.filter((message: any) => {
-        if (message.page_name === myID()) {
-          return message;
-        }
-      });
-      return dataSource;
-    }
-  };
 
   const userImage = () => {
     if (session?.user?.image === null || session?.user?.image === undefined) {
@@ -131,9 +99,7 @@ export default function ChatRoom({ messages }: any) {
         return [...prevState, userMessage];
       });
       //sets SWR message source state holder
-      setDataMessages?.((prevState: any) => {
-        return [...prevState, userMessage];
-      });
+
       //resets current message holder
       setuserMessage((prevState) => {
         return {
@@ -160,7 +126,7 @@ export default function ChatRoom({ messages }: any) {
         Click to view latest messages
       </button>
       <section className="bg-white rounded-md h-96 w-96 flex flex-wrap items-end overflow-y-auto">
-        {findDataSource()?.map((message: any) => {
+        {messageData.map((message: any) => {
           const messageContainer = () => {
             if (message.username === session?.user?.name) {
               return "w-full flex flex-row-reverse items-end text-black mb-3 mr-2";

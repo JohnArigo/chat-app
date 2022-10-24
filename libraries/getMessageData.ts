@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 //find how to pull ID from paths to getServerProps on [id].
 //from [id], ID will be passed to getMessageID() for data.
 
-export async function getMessageData({ id }: any) {
+export async function getMessageData(id: any) {
   const messages = await prisma.messages.findMany({
     where: {
       page_name: id,

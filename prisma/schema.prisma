@@ -74,3 +74,9 @@ model Pages{
   page_title String
 }
 
+model Scores {
+  username String @id
+  score Int
+  date DateTime
+}
+

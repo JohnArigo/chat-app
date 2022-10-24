@@ -1,48 +1,48 @@
 import { useRouter } from "next/router";
-import { PrismaClient } from "@prisma/client";
-import { getMessageData } from "../libraries/getMessageData";
-import { Root2 } from "../libraries/types/types";
+import AnagramGame from "../components/AnagramGame";
 import { useRef, useState, useEffect } from "react";
-import axios from "axios";
-import useSWR, { SWRConfig } from "swr";
+import TimeOut from "../components/timeout";
+import { useSession } from "next-auth/react";
+import NoSessionPage from "../components/noSessionPage";
 
 export default function GameTrial() {
-  const words = ["hello", "hell", "hoe", "lol"];
-
-  const [playerArray, setPlayerArray] = useState(["h", "e", "l", "l", "o"]);
-  const [submitArray, setSubmitArray] = useState<string[]>([]);
-  const [totalArray, setTotalArray] = useState([]);
-  const counter: number = 0;
-
-  const handleClick = (letter: string) => {
-    setSubmitArray((prevState) => {
-      return [...prevState, letter];
-    });
-  };
-
-  return (
-    <main className="w-screen h-screen flex flex-col items-center justify-center">
-      <div className="w-72 h-16 flex ">
-        {submitArray.map((subLetter: string) => {
-          return (
-            <div className="w-10 h-10 bg-amber-700 text-white mr-4 flex justify-center items-center">
-              {subLetter}
-            </div>
-          );
-        })}
-      </div>
-      <div className="w-72 h-16 flex ">
-        {playerArray.map((letter: string) => {
-          return (
-            <div
-              className="w-10 h-10 bg-amber-700 text-white mr-4 flex justify-center items-center"
-              onClick={() => handleClick(letter)}
-            >
-              {letter}
-            </div>
-          );
-        })}
-      </div>
-    </main>
-  );
+  const { data: session, status } = useSession();
+  const [timer, setTimer] = useState(-1);
+  useEffect(() => {
+    timer > 0 && setTimeout(() => setTimer(timer - 1), 1000);
+  }, [timer]);
+  const [start, setStart] = useState(false);
+  const [counter, setCounter] = useState<number>(0);
+  if (!session) {
+    return (
+      <main>
+        <NoSessionPage />
+      </main>
+    );
+  } else {
+    return (
+      <main className="w-screen h-screen flex flex-col items-center justify-center">
+        <h1>{timer <= 0 ? null : `Time left: ${timer}`}</h1>
+        {timer === 0 ? (
+          <TimeOut
+            score={counter}
+            setTimer={setTimer}
+            setStart={setStart}
+            session={session}
+            setCounter={setCounter}
+          />
+        ) : (
+          <AnagramGame
+            setTimer={setTimer}
+            timer={timer}
+            counter={counter}
+            setCounter={setCounter}
+            start={start}
+            setStart={setStart}
+            session={session}
+          />
+        )}
+      </main>
+    );
+  }
 }

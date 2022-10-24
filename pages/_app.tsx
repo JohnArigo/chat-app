@@ -12,7 +12,6 @@ export async function getServerSideProps(ctx: any) {
   };
 }
 function MyApp({ Component, pageProps }: AppProps<{ session: Session }>) {
-  console.log(pageProps.session);
   return (
     <SessionProvider session={pageProps.session}>
       <Practice />
