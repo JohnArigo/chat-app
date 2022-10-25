@@ -4,8 +4,25 @@ import { useRef, useState, useEffect } from "react";
 import TimeOut from "../components/timeout";
 import { useSession } from "next-auth/react";
 import NoSessionPage from "../components/noSessionPage";
+import { PrismaClient } from "@prisma/client";
 
-export default function GameTrial() {
+const prisma = new PrismaClient();
+
+export async function getStaticProps() {
+  const topScores = await prisma.scores.findMany({
+    orderBy: {
+      score: "desc",
+    },
+  });
+
+  return {
+    props: {
+      topScores: topScores,
+    },
+  };
+}
+
+export default function GameTrial({ topScores }: any) {
   const { data: session, status } = useSession();
   const [timer, setTimer] = useState(-1);
   useEffect(() => {
@@ -30,6 +47,7 @@ export default function GameTrial() {
             setStart={setStart}
             session={session}
             setCounter={setCounter}
+            topScores={topScores}
           />
         ) : (
           <AnagramGame
@@ -39,7 +57,6 @@ export default function GameTrial() {
             setCounter={setCounter}
             start={start}
             setStart={setStart}
-            session={session}
           />
         )}
       </main>

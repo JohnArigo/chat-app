@@ -9,7 +9,6 @@ export default function AnagramGame({
   setCounter,
   start,
   setStart,
-  session,
 }: any) {
   const defaultLetters = ["h", "e", "l", "l", "o"];
   const [playerArray, setPlayerArray] = useState<string[]>([
@@ -98,7 +97,7 @@ export default function AnagramGame({
 
   if (start) {
     return (
-      <main className="w-96 h-96 flex flex-col items-center justify-center">
+      <main className="w-96 h-96 flex flex-col items-center justify-center bg-white">
         <div className="w-72 h-16 flex ">
           {submitArray.map((subLetter, index) => {
             return (
