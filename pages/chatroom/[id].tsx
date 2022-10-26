@@ -98,8 +98,6 @@ export default function ChatRoom({ messages }: any) {
       setMessageData?.((prevState: any) => {
         return [...prevState, userMessage];
       });
-      //sets SWR message source state holder
-
       //resets current message holder
       setuserMessage((prevState) => {
         return {
@@ -122,7 +120,7 @@ export default function ChatRoom({ messages }: any) {
 
   return (
     <main className="w-screen h-screen flex flex-col justify-center items-center">
-      <button className=" cursor-pointer" onClick={() => bottomClick()}>
+      <button className="cursor-pointer  mt-20" onClick={() => bottomClick()}>
         Click to view latest messages
       </button>
       <section className="bg-white rounded-md h-96 w-96 flex flex-wrap items-end overflow-y-auto">
@@ -137,9 +135,10 @@ export default function ChatRoom({ messages }: any) {
 
           return (
             <div className={messageContainer()} key={message.id}>
-              <h1 className="ml-2 w-14 h-14 flex justify-center items-center rounded-full bg-orange-700">
-                {session?.user?.name![0]}
-              </h1>
+              <img
+                className="ml-2 w-10 h-10 flex justify-center items-center rounded-full "
+                src={userImage()}
+              />
 
               <h1 className=" w-56 h-20 max-h-48 bg-slate-600 ml-2 rounded-md overflow-y-auto overflow-x-hidden">
                 {message.message}
