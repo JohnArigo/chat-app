@@ -125,6 +125,7 @@ export default function ChatRoom({ messages }: any) {
       </button>
       <section className="bg-white rounded-md h-96 w-96 flex flex-wrap items-end overflow-y-auto">
         {messageData.map((message: any) => {
+          console.log(message);
           const messageContainer = () => {
             if (message.username === session?.user?.name) {
               return "w-full flex flex-row-reverse items-end text-black mb-3 mr-2";
@@ -137,7 +138,7 @@ export default function ChatRoom({ messages }: any) {
             <div className={messageContainer()} key={message.id}>
               <img
                 className="ml-2 w-10 h-10 flex justify-center items-center rounded-full "
-                src={userImage()}
+                src={message.user_image}
               />
 
               <h1 className=" w-56 h-20 max-h-48 bg-slate-600 ml-2 rounded-md overflow-y-auto overflow-x-hidden">
@@ -151,7 +152,7 @@ export default function ChatRoom({ messages }: any) {
       {session ? (
         <form
           onSubmit={(e) => submitToChat(e)}
-          className="mt-10 bg-green-200 w-96 h-20 flex items-center"
+          className="mt-10  w-96 h-20 flex items-center"
         >
           <textarea
             className="ml-2 h-16 w-64 overflow-y-auto resize-none"
@@ -159,7 +160,7 @@ export default function ChatRoom({ messages }: any) {
             value={userMessage.message}
             onChange={(event) => handleChange(event)}
           />
-          <button className="bg-red-200 ml-3 ">Submit chat</button>
+          <button className=" ml-3 ">Submit chat</button>
         </form>
       ) : (
         <NoSessionForm />

@@ -58,6 +58,7 @@ model User {
   messages         Messages[]
   accounts      Account[]
   sessions      Session[]
+
 }
 
 model VerificationToken {
@@ -75,7 +76,7 @@ model Pages{
 }
 
 model Scores {
- id Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
   username String
   score Int
   date String

@@ -70,7 +70,10 @@ export default function EditAccount({ user }: any) {
       <section className="flex flex-wrap justify-center items-center mt-10">
         <img className="h-16 w-16 mr-5" src={user[0].image} />
         <div className="flex flex-col">
-          <h4 className="self-end mb-3 text-xs" onClick={() => setEdit(true)}>
+          <h4
+            className="self-end mb-3 text-xs cursor-pointer"
+            onClick={() => setEdit(true)}
+          >
             edit username
           </h4>
           {edit ? (

@@ -24,8 +24,9 @@ export default function ChatRooms({ links }: any) {
 
   if (session) {
     return (
-      <main className="flex items-center h-screen w-screen justify-center">
-        <section className="h-20 w-20 flex flex-col">
+      <main className="flex flex-col items-center h-screen w-screen justify-center">
+        <h1>Select chatroom to enter</h1>
+        <section className="h-20 w-20 flex flex-col mt-10">
           {links.map((link: any) => {
             return (
               <div className="mb-5">

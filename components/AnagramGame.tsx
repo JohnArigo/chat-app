@@ -97,7 +97,8 @@ export default function AnagramGame({
 
   if (start) {
     return (
-      <main className="w-96 h-96 flex flex-col items-center justify-center bg-white">
+      <main className="w-96 h-96 flex flex-col items-center justify-center bg-gray-400">
+        <h1>Score : {counter}</h1>
         <div className="w-72 h-16 flex ">
           {submitArray.map((subLetter, index) => {
             return (

@@ -155,16 +155,27 @@ const Header: React.FC = () => {
           HOME
         </a>
       </Link>
-      <section className="flex flex-row items-center mt-1">
-        <div>
-          <img
-            className="w-10 h-10 rounded-full mr-3"
-            src={session?.user?.image!}
-          />
-        </div>
-        <div className="mr-2">{session?.user?.name}</div>
-        <div></div>
-      </section>
+
+      {session ? (
+        <section className="flex flex-row items-center mt-1">
+          <Link href="/edit-account">
+            <img
+              className="w-10 h-10 rounded-full mr-3 cursor-pointer"
+              src={session?.user?.image!}
+            />
+          </Link>
+          <div className="mr-5">{session?.user?.name}</div>
+          <button className="mr-2" onClick={() => signOut()}>
+            <a>Log out</a>
+          </button>
+        </section>
+      ) : (
+        <Link href="/api/auth/signin">
+          <a className="mr-2" data-active={isActive("/signup")}>
+            Log in
+          </a>
+        </Link>
+      )}
     </nav>
   );
 };
