@@ -10,32 +10,14 @@ const Header: React.FC = () => {
 
   const { data: session, status } = useSession();
 
-  let left = (
+  {
+    /*  let left = (
     <div className="left">
       <Link href="/">
         <a className="bold" data-active={isActive("/")}>
           Feed
         </a>
       </Link>
-      <style jsx>{`
-        .bold {
-          font-weight: bold;
-        }
-
-        a {
-          text-decoration: none;
-          color: var(--geist-foreground);
-          display: inline-block;
-        }
-
-        .left a[data-active="true"] {
-          color: gray;
-        }
-
-        a + a {
-          margin-left: 1rem;
-        }
-      `}</style>
     </div>
   );
 
@@ -49,35 +31,11 @@ const Header: React.FC = () => {
             Feed
           </a>
         </Link>
-        <style jsx>{`
-          .bold {
-            font-weight: bold;
-          }
-
-          a {
-            text-decoration: none;
-            color: var(--geist-foreground);
-            display: inline-block;
-          }
-
-          .left a[data-active="true"] {
-            color: gray;
-          }
-
-          a + a {
-            margin-left: 1rem;
-          }
-        `}</style>
       </div>
     );
     right = (
       <div className="right">
         <p>Validating session ...</p>
-        <style jsx>{`
-          .right {
-            margin-left: auto;
-          }
-        `}</style>
       </div>
     );
   }
@@ -187,19 +145,26 @@ const Header: React.FC = () => {
         `}</style>
       </div>
     );
+  }*/
   }
 
   return (
-    <nav className="fixed flex flex-row justify-between w-full">
-      {left}
-      {right}
-      <style jsx>{`
-        nav {
-          display: flex;
-          padding: 2rem;
-          align-items: center;
-        }
-      `}</style>
+    <nav className="fixed flex flex-row justify-between w-full items-center">
+      <Link href="/">
+        <a className="ml-2 bold" data-active={isActive("/")}>
+          HOME
+        </a>
+      </Link>
+      <section className="flex flex-row items-center mt-1">
+        <div>
+          <img
+            className="w-10 h-10 rounded-full mr-3"
+            src={session?.user?.image!}
+          />
+        </div>
+        <div className="mr-2">{session?.user?.name}</div>
+        <div></div>
+      </section>
     </nav>
   );
 };

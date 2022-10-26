@@ -16,7 +16,6 @@ function MyApp({ Component, pageProps }: AppProps<{ session: Session }>) {
     <SessionProvider session={pageProps.session}>
       <Practice />
       <Component {...pageProps} />
-      <Footer />
     </SessionProvider>
   );
 }
