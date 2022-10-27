@@ -43,12 +43,14 @@ export type packageType = {
   email: string;
   name: string;
 };
+
 export default function EditAccount({ user }: any) {
   const [edit, setEdit] = useState<boolean>(false);
   const [sendingPackage, setSendingPackage] = useState<packageType>({
     email: user[0].email,
     name: user[0].name,
   });
+
   const handleChange = (e: any) => {
     setSendingPackage((prevState) => {
       return { ...prevState, name: e?.target.value };
