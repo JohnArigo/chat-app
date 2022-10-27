@@ -11,7 +11,9 @@ export default Home; */
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+//@ts-ignore
 import { Typewriter } from "react-simple-typewriter";
+//@ts-ignore
 
 export default function Home({ user }: any) {
   // `session` will match the returned value of `callbacks.session()` from `NextAuth()`

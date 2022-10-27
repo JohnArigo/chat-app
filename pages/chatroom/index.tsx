@@ -29,7 +29,7 @@ export default function ChatRooms({ links }: any) {
         <section className="h-20 w-20 flex flex-col mt-10">
           {links.map((link: any) => {
             return (
-              <div className="mb-5">
+              <div className="mb-5" key={link.page_title}>
                 <Link href={`chatroom/${link.page_name}`}>
                   {link.page_title}
                 </Link>

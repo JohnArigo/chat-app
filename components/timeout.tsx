@@ -55,7 +55,10 @@ export default function TimeOut({
       <div>
         {topScores.map((score: any) => {
           return (
-            <section className="flex flex-row">
+            <section
+              className="flex flex-row"
+              key={`${score?.username}-${score?.score}`}
+            >
               <div>{score?.username}</div>
               <div>{score?.score}</div>
               <div>{score?.date}</div>

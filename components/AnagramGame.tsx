@@ -105,6 +105,7 @@ export default function AnagramGame({
               <div
                 className="w-10 h-10 bg-amber-700 text-white mr-4 flex justify-center items-center"
                 onClick={() => handleClickSubmit(subLetter, index)}
+                key={index}
               >
                 {subLetter}
               </div>
@@ -122,6 +123,7 @@ export default function AnagramGame({
               <div
                 className="w-10 h-10 bg-amber-700 text-white mr-4 flex justify-center items-center"
                 onClick={() => handleClickPlayer(letter, index)}
+                key={index}
               >
                 {letter}
               </div>
