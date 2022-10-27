@@ -5,8 +5,7 @@ import { Root2 } from "../../libraries/types/types";
 import { useRef, useState, useEffect } from "react";
 import { useSession, getSession } from "next-auth/react";
 import NoSessionForm from "../../components/noSessionForm";
-
-const prisma = new PrismaClient();
+import prisma from "../../lib/prisma";
 
 export async function getStaticPaths() {
   //prisma query to find all paths available
@@ -25,7 +24,7 @@ export async function getStaticPaths() {
 export async function getStaticProps(context: any) {
   //sends ID for Prisma query
   const roomMessages = await getMessageData(context.params.id);
-
+  console.log(roomMessages);
   return {
     props: {
       messages: roomMessages,

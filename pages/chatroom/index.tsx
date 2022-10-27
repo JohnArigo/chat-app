@@ -75,7 +75,6 @@ export default function ChatRooms({ links }: multiPageType) {
     setEdit(true);
   };
 
-  console.log(sendingPackage);
   if (session) {
     return (
       <main className="flex flex-col items-center h-screen w-screen justify-center">

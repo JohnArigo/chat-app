@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Modal } from "@mantine/core";
-
-const prisma = new PrismaClient();
+import prisma from "../lib/prisma";
 import { useSession, getSession } from "next-auth/react";
 import { useState } from "react";
 

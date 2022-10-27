@@ -1,7 +1,6 @@
 //you will pull specific message data from here
 //this will pull all message data and will filter based on ID passed.
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import prisma from "../lib/prisma";
 
 //find how to pull ID from paths to getServerProps on [id].
 //from [id], ID will be passed to getMessageID() for data.

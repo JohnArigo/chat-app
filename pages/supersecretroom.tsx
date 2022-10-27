@@ -5,8 +5,7 @@ import TimeOut from "../components/timeout";
 import { useSession } from "next-auth/react";
 import NoSessionPage from "../components/noSessionPage";
 import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "../lib/prisma";
 
 export async function getStaticProps() {
   const topScores = await prisma.scores.findMany({
