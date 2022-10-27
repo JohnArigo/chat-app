@@ -18,6 +18,8 @@ import { Typewriter } from "react-simple-typewriter";
 export default function Home({ user }: any) {
   // `session` will match the returned value of `callbacks.session()` from `NextAuth()`
 
+  console.log(JSON.stringify(process.env));
+
   return (
     <main className="w-screen h-screen flex flex-col justify-center items-center">
       <Link href={"./chatroom"}>Chatrooms</Link>

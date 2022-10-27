@@ -1,14 +1,14 @@
-import { PrismaClient } from "@prisma/client";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
 import NoSessionPage from "../../components/noSessionPage";
+import prisma from "../../lib/prisma";
 
-const prisma = new PrismaClient();
 //pulling data from database SQLite using PRISMA
 export async function getServerSideProps() {
   const links = await prisma.pages.findMany();
+
+  console.log(links);
 
   return {
     props: {
