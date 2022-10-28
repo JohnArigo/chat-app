@@ -92,8 +92,8 @@ export default function AnagramGame({
     });
   };
 
-  console.log(totalArray);
-  console.log(counter);
+  // console.log(totalArray);
+  // console.log(counter);
 
   if (start) {
     return (

@@ -1,9 +1,9 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import Practice from "../components/NavBar";
-import Footer from "../components/Footer";
+
 import { SessionProvider, useSession, getSession } from "next-auth/react";
 import { Session } from "next-auth";
+import Header from "../components/NavBar";
 export async function getServerSideProps(ctx: any) {
   return {
     props: {
@@ -14,7 +14,7 @@ export async function getServerSideProps(ctx: any) {
 function MyApp({ Component, pageProps }: AppProps<{ session: Session }>) {
   return (
     <SessionProvider session={pageProps.session}>
-      <Practice />
+      <Header />
       <Component {...pageProps} />
     </SessionProvider>
   );
