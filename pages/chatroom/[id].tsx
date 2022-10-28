@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { PrismaClient } from "@prisma/client";
+
 import { getMessageData } from "../../libraries/getMessageData";
 import { Root2 } from "../../libraries/types/types";
 import { useRef, useState, useEffect } from "react";
@@ -21,13 +21,26 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps(context: any) {
+export async function getStaticProps(paths: any) {
   //sends ID for Prisma query
-  const roomMessages = await getMessageData(context.params.id);
-  console.log(roomMessages);
+  //const roomMessages = await getMessageData();
+  //console.log(roomMessages);
+
+  const messages = await prisma.messages.findMany({
+    where: {
+      page_name: paths.params.id,
+    },
+  });
+
+  if (!messages) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
     props: {
-      messages: roomMessages,
+      messages: messages,
     },
     revalidate: 5,
   };

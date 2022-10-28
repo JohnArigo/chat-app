@@ -10,7 +10,7 @@ import Link from "next/link";
 export async function getServerSideProps() {
   const links = await prisma.pages.findMany();
 
-  console.log(links);
+  //console.log(links);
 
   return {
     props: {
