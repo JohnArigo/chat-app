@@ -41,7 +41,6 @@ export type pageType = {
   page_title: string;
 };
 export default function ChatRooms({ links }: multiPageType) {
-  const router = useRouter();
   console.log(links);
   const { data: session, status } = useSession();
   const [sendingPackage, setSendingPackage] = useState<pageType>();
