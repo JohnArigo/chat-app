@@ -18,16 +18,6 @@ const options = {
       clientSecret: process.env.GITHUB_SECRET,
       scope: "read:user",
     }),
-    GoogleProvider({
-      //@ts-ignore
-      clientId: process.env.GOOGLE_ID, //@ts-ignore
-      clientSecret: process.env.GOOGLE_SECRET,
-    }),
-    FacebookProvider({
-      //@ts-ignore
-      clientId: process.env.FACEBOOK_ID, //@ts-ignore
-      clientSecret: process.env.FACEBOOK_SECRET,
-    }),
   ],
   adapter: PrismaAdapter(prisma),
   secret: process.env.SECRET,

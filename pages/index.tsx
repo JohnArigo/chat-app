@@ -29,7 +29,7 @@ export default function Home({ user }: any) {
           words={[
             "Lets chat! click on Chatrooms above",
             "Live chat-app with 5 rooms",
-            "Use GitHub, Google or Facebook to login",
+            "Use GitHub to Log In",
             "Credentials are automatically transferred",
             "Shout in the chat if you find any bugs!",
           ]}
